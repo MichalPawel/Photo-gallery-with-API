@@ -1,3 +1,10 @@
+Photo gallery with API
+
+training with: https://www.udemy.com/course/zaawansowane-projekty-w-css-i-javascript/
+
+
+
+
 # Minimalist Webpack Boilerplate
 
 ## Instructions
