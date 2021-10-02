@@ -5,9 +5,11 @@ class Doggo {
         this.apiUrl = 'https://dog.ceo/api'
         this.imgElement = document.querySelector('.container img')
         this.bgcElement = document.querySelector('.featured-dog__background')
+        this.tiles = document.querySelector('.tiles');
         this.init()
+        this.showAllBreeds()
     }
-    listAllBreeds() {
+    listBreeds() {
         return fetch(`${this.apiUrl}/breeds/list/all`)
             .then(response => response.json())
             .then(data => data.message)
@@ -29,8 +31,49 @@ class Doggo {
                 this.imgElement.setAttribute('src', img)
                 this.bgcElement.style.backgroundImage = `url(${img})`
             })
-        this.listAllBreeds()
-            .then(list => console.log(list))
+    }
+    addBreed(breed, subBreed) {
+        let name = '';
+        let type = '';
+        if (typeof subBreed === 'undefined') {
+            name = breed;
+            type = breed;
+        } else {
+            name = `${breed} ${subBreed}`;
+            type = `${breed}/${subBreed}`;
+        }
+        const tile = document.createElement('div');
+        tile.classList.add('tiles__tile');
+
+        const tileContent = document.createElement('div');
+        tileContent.classList.add('tiles__tile-content');
+        tileContent.innerText = name;
+        tileContent.addEventListener('click', () => {
+            this.getRandomImageByBreed(type)
+                .then(img => {
+                    this.imgElement.setAttribute('src', img)
+                    this.bgcElement.style.backgroundImage = `url(${img})`
+                })
+        })
+        tile.appendChild(tileContent);
+        this.tiles.appendChild(tile);
+
+    }
+    showAllBreeds() {
+        this.listBreeds()
+            .then(breeds => {
+                for (const breed in breeds) {
+                    if (breeds[breed].length === 0) {
+                        console.log('dzialam')
+                        this.addBreed(breed)
+                    } else {
+                        for (const subBreed of breeds[breed]) {
+                            this.addBreed(breed, subBreed)
+                        }
+                    }
+                }
+            }
+            )
     }
 }
 document.addEventListener('DOMContentLoaded', () => new Doggo())
