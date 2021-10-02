@@ -1,11 +1,10 @@
 import '../scss/index.scss';
 
-console.log('Boilerplate is working!');
-
 class Doggo {
     constructor() {
         this.apiUrl = 'https://dog.ceo/api'
-        this.imgElement = document.querySelector('.featured-dog img')
+        this.imgElement = document.querySelector('.container img')
+        this.bgcElement = document.querySelector('.featured-dog__background')
         this.init()
     }
     listAllBreeds() {
@@ -26,12 +25,12 @@ class Doggo {
     }
     init() {
         this.getRandomImage()
-            .then(img => this.imgElement.setAttribute('src', img))
+            .then(img => {
+                this.imgElement.setAttribute('src', img)
+                this.bgcElement.style.backgroundImage = `url(${img})`
+            })
         this.listAllBreeds()
             .then(list => console.log(list))
     }
 }
-
 document.addEventListener('DOMContentLoaded', () => new Doggo())
-
-
