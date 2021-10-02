@@ -6,6 +6,7 @@ class Doggo {
         this.imgElement = document.querySelector('.container img')
         this.bgcElement = document.querySelector('.featured-dog__background')
         this.tiles = document.querySelector('.tiles');
+        this.spinnerEl = document.querySelector('.spinner');
         this.init()
         this.showAllBreeds()
     }
@@ -26,10 +27,12 @@ class Doggo {
             .then(data => data.message)
     }
     init() {
+        this.spinnerEl.classList.add('spinner--visible')
         this.getRandomImage()
             .then(img => {
                 this.imgElement.setAttribute('src', img)
                 this.bgcElement.style.backgroundImage = `url(${img})`
+                this.spinnerEl.classList.remove('spinner--visible')
             })
     }
     addBreed(breed, subBreed) {
@@ -39,7 +42,7 @@ class Doggo {
             name = breed;
             type = breed;
         } else {
-            name = `${breed} ${subBreed}`;
+            name = `${breed}<br>${subBreed}`;
             type = `${breed}/${subBreed}`;
         }
         const tile = document.createElement('div');
@@ -47,12 +50,15 @@ class Doggo {
 
         const tileContent = document.createElement('div');
         tileContent.classList.add('tiles__tile-content');
-        tileContent.innerText = name;
+        if (typeof subBreed === 'undefined') tileContent.style.lineHeight = '40px';
+        tileContent.innerHTML = name;
         tileContent.addEventListener('click', () => {
+            this.spinnerEl.classList.add('spinner--visible')
             this.getRandomImageByBreed(type)
                 .then(img => {
                     this.imgElement.setAttribute('src', img)
                     this.bgcElement.style.backgroundImage = `url(${img})`
+                    this.spinnerEl.classList.remove('spinner--visible')
                 })
         })
         tile.appendChild(tileContent);

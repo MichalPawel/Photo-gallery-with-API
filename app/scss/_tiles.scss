@@ -1,21 +1,28 @@
 .tiles {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
-    margin: 0 $main-spacing * -1;
-}
-.tiles__tile {
-    flex: 0 1 33.3%;
-    padding: 0 $main-spacing;
-    margin-bottom: $main-spacing/2
-}
-.tiles__tile-content {
-    cursor: pointer;
-    background-color: $primary-color;
-    padding: $main-spacing;
-    color: $tile-text-color;
-    text-align: center;
-    transition: .3s;
-    &:hover {
-        background: darken($primary-color,10%)
+    
+    .tiles__tile {
+        @media (max-width: 1000px) {
+            flex: 0 1 50%;
+        }
+        flex: 0 1 33.3%;
+        padding: 0 $main-spacing/2;
+        margin-bottom: $main-spacing;
+        
+    }
+    .tiles__tile-content {
+        min-height: 70px;
+        
+        cursor: pointer;
+        background-color: $primary-color;
+        padding: $main-spacing;
+        color: $tile-text-color;
+        text-align: center;
+        transition: .3s;
+        &:hover {
+            background: darken($primary-color,10%)
+        }
     }
 }
