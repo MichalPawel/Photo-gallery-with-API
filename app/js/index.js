@@ -2,13 +2,18 @@ import '../scss/index.scss';
 
 class Doggo {
     constructor() {
-        this.apiUrl = 'https://dog.ceo/api'
-        this.imgElement = document.querySelector('.container img')
-        this.bgcElement = document.querySelector('.featured-dog__background')
+        this.apiUrl = 'https://dog.ceo/api';
+        this.imgElement = document.querySelector('.container img');
+        this.bgcElement = document.querySelector('.featured-dog__background');
         this.tiles = document.querySelector('.tiles');
         this.spinnerEl = document.querySelector('.spinner');
-        this.init()
-        this.showAllBreeds()
+        this.init();
+        this.showAllBreeds();
+    }
+    showImgWhenReady(img) {
+        this.imgElement.setAttribute('src', img);
+        this.bgcElement.style.backgroundImage = `url(${img})`;
+        this.spinnerEl.classList.remove('spinner--visible');
     }
     listBreeds() {
         return fetch(`${this.apiUrl}/breeds/list/all`)
@@ -29,11 +34,7 @@ class Doggo {
     init() {
         this.spinnerEl.classList.add('spinner--visible')
         this.getRandomImage()
-            .then(img => {
-                this.imgElement.setAttribute('src', img)
-                this.bgcElement.style.backgroundImage = `url(${img})`
-                this.spinnerEl.classList.remove('spinner--visible')
-            })
+            .then(img => this.showImgWhenReady(img))
     }
     addBreed(breed, subBreed) {
         let name = '';
@@ -47,34 +48,28 @@ class Doggo {
         }
         const tile = document.createElement('div');
         tile.classList.add('tiles__tile');
-
         const tileContent = document.createElement('div');
         tileContent.classList.add('tiles__tile-content');
         if (typeof subBreed === 'undefined') tileContent.style.lineHeight = '40px';
         tileContent.innerHTML = name;
         tileContent.addEventListener('click', () => {
-            this.spinnerEl.classList.add('spinner--visible')
+            window.scrollTo(0, 0);
+            this.spinnerEl.classList.add('spinner--visible');
             this.getRandomImageByBreed(type)
-                .then(img => {
-                    this.imgElement.setAttribute('src', img)
-                    this.bgcElement.style.backgroundImage = `url(${img})`
-                    this.spinnerEl.classList.remove('spinner--visible')
-                })
+                .then(img => this.showImgWhenReady(img))
         })
         tile.appendChild(tileContent);
         this.tiles.appendChild(tile);
-
     }
     showAllBreeds() {
         this.listBreeds()
             .then(breeds => {
                 for (const breed in breeds) {
                     if (breeds[breed].length === 0) {
-                        console.log('dzialam')
-                        this.addBreed(breed)
+                        this.addBreed(breed);
                     } else {
                         for (const subBreed of breeds[breed]) {
-                            this.addBreed(breed, subBreed)
+                            this.addBreed(breed, subBreed);
                         }
                     }
                 }

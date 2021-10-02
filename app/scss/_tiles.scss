@@ -2,7 +2,7 @@
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    
+
     .tiles__tile {
         @media (max-width: 1000px) {
             flex: 0 1 50%;
@@ -14,7 +14,6 @@
     }
     .tiles__tile-content {
         min-height: 70px;
-        
         cursor: pointer;
         background-color: $primary-color;
         padding: $main-spacing;
